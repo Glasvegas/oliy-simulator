@@ -9,7 +9,7 @@
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const config = require('config.json')
+const config = require('./config.json')
 const { inspect } = require('util')
 
 client.login(config.token);
@@ -78,7 +78,8 @@ client.on('message', (msg) => {
 
 	if (msg.content.startsWith('<@500954344510980136>')) return msg.channel.send('don\'t tag me for that please');
 	if (msg.content.toLowerCase().startsWith(PREFIX) || msg.content.startsWith('oily')) {
-		let args = msg.content.split(' ').splice(0, 1);
+		let args = msg.content.split(' ')
+		args.splice(0, 1);
 		
 		if (args.toString().endsWith('?')) return msg.channel.send('I\'m a busy man so I don\'t have time to answer your question thank you');
 		if (args.toString().length < 2) return
