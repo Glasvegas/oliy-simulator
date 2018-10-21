@@ -15,6 +15,7 @@ const { inspect } = require('util')
 client.login(config.token);
 
 client.on('message', (msg) => {
+	if (msg.author.bot) return;
 	const PREFIX = 'oliy';
 
 	const random = Math.floor(Math.random() * 10);
