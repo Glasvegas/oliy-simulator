@@ -8,7 +8,15 @@
 */
 
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const events = ['MESSAGE_CREATE', 'GUILD_CREATE', 'GUILD_DELETE', 'READY']
+const disabledEvents = Object.keys(Discord.Constants.WSEvents).filter(i => events.includes(i))
+const client = new Discord.Client({
+	messageCacheMaxSize: 0,
+	messageCacheLifetime: 0,
+	messageSweepInterval: 60,
+	disableEveryone: true,
+	disabledEvents
+});
 const config = require('./config.json')
 const { inspect } = require('util')
 
