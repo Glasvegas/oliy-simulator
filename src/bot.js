@@ -8,8 +8,8 @@
 */
 
 const Discord = require('discord.js');
-const events = ['MESSAGE_CREATE', 'GUILD_CREATE', 'GUILD_DELETE', 'READY']
-const disabledEvents = Object.keys(Discord.Constants.WSEvents).filter(i => events.includes(i))
+const events = ['MESSAGE_CREATE', 'GUILD_CREATE', 'GUILD_DELETE', 'READY', 'RESUMED', 'GUILD_SYNC', 'GUILD_UPDATE']
+const disabledEvents = Object.keys(Discord.Constants.WSEvents).filter(i => !events.includes(i))
 const client = new Discord.Client({
 	messageCacheMaxSize: 0,
 	messageCacheLifetime: 0,
