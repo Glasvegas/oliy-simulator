@@ -20,73 +20,76 @@ const client = new Discord.Client({
 const config = require('./config.json')
 const { inspect } = require('util')
 
-client.login(config.token);
+const OLIY_RESPONSES = [
+	`I love you ${msg.author.username}`,
+	'I\'ll have you know that was very legal',
+	`You meme, get out of ${msg.channel.name}`,
+	`Certification Warning\n${msg.author} - Violating certification requirements \`Informative use of the short and long description\`. 1/3`,
+	'kk',
+	'dumb',
+	'not accurate',
+	'Please email business@discordbots.org.',
+	'https://imgur.com/1w9N5ni',
+	'What the fuck',
+	'We\'ve decided to put a very minimal amount of ads on the site to make up for that.',
+	'I am a busy man',
+	'Please report that to the issues repo',
+	`Yea I'll give it a ${random}/10, losing ${10-random} points for wasting your life`,
+	'Don\'t bother e-mailing me about it, do you know many many e-mails I get? :triumph:',
+	'ye',
+	'nah',
+	'Russians ruin everything',
+	'heck',
+	`${msg.author} you're right`,
+	'Yea it\'s weird',
+	'hmmmm',
+	'this ain\'t it chief',
+	'k',
+	'it\'s not math',
+	'You\'re probably just doing it wrong',
+	'okay i have noted down your opinion in depth',
+	'thats been noted',
+	'mhm',
+	'read it yourself kiddo',
+	'you\'re going down the right route for a mute sir',
+	'I already service discord running dbl probably more than I would if I was employed at discord',
+	'So many discordians rely on DBL as a service',
+	'complain to my tour manager',
+	'android is better',
+	'that sounds expensive and not that fun',
+	'idk if you like my taste',
+	`Do I see shitpost in ${msg.channel.name}`,
+	'Hello I have been summoned',
+	'Can we turn the toxicity down thank you xoxo',
+	'I\'ll remove your cert'
+]
+const FEELINGS = [
+	'bad',
+	'not so good',
+	'better',
+	'pretty shit',
+	'like it needs more OOMPH',
+	'like it needs more BUSINESS',
+	'pretty bland, needs more ads',
+	'bad, but adding a donate button might help that',
+	'alright',
+	'good',
+	'not shit',
+	'not worth my time'
+]
+const PREFIX = 'oliy';
+
+client.login(config.token)
+	.then(() => {
+		client.users.sweep(u => u);
+		setInterval(() => client.users.sweep(u => u), 5e5);
+	});
 
 client.on('message', (msg) => {
 	if (msg.author.bot) return;
-	const PREFIX = 'oliy';
-
-	const random = Math.floor(Math.random() * 10);
-	const OLIY_RESPONSES = [
-		`I love you ${msg.author.username}`,
-		'I\'ll have you know that was very legal',
-		`You meme, get out of ${msg.channel.name}`,
-		`Certification Warning\n${msg.author} - Violating certification requirements \`Informative use of the short and long description\`. 1/3`,
-		'kk',
-		'dumb',
-		'not accurate',
-		'Please email business@discordbots.org.',
-		'https://imgur.com/1w9N5ni',
-		'What the fuck',
-		'We\'ve decided to put a very minimal amount of ads on the site to make up for that.',
-		'I am a busy man',
-		'Please report that to the issues repo',
-		`Yea I'll give it a ${random}/10, losing ${10-random} points for wasting your life`,
-		'Don\'t bother e-mailing me about it, do you know many many e-mails I get? :triumph:',
-		'ye',
-		'nah',
-		'Russians ruin everything',
-		'heck',
-		`${msg.author} you're right`,
-		'Yea it\'s weird',
-		'hmmmm',
-		'this ain\'t it chief',
-		'k',
-		'it\'s not math',
-		'You\'re probably just doing it wrong',
-		'okay i have noted down your opinion in depth',
-		'thats been noted',
-		'mhm',
-		'read it yourself kiddo',
-		'you\'re going down the right route for a mute sir',
-		'I already service discord running dbl probably more than I would if I was employed at discord',
-		'So many discordians rely on DBL as a service',
-		'complain to my tour manager',
-		'android is better',
-		'that sounds expensive and not that fun',
-		'idk if you like my taste',
-		`Do I see shitpost in ${msg.channel.name}`,
-		'Hello I have been summoned',
-		'Can we turn the toxicity down thank you xoxo',
-		'I\'ll remove your cert'
-	]
-	const FEELINGS = [
-		'bad',
-		'not so good',
-		'better',
-		'pretty shit',
-		'like it needs more OOMPH',
-		'like it needs more BUSINESS',
-		'pretty bland, needs more ads',
-		'bad, but adding a donate button might help that',
-		'alright',
-		'good',
-		'not shit',
-		'not worth my time'
-	]
-
 	if (msg.content.startsWith('<@500954344510980136>')) return msg.channel.send('don\'t tag me for that please');
 	if (msg.content.toLowerCase().startsWith(PREFIX) || msg.content.startsWith('oily')) {
+		const random = Math.floor(Math.random() * 10);
 		let args = msg.content.split(' ')
 		args.splice(0, 1);
 		
