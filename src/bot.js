@@ -21,10 +21,10 @@ const config = require('./config.json')
 const { inspect } = require('util')
 
 const OLIY_RESPONSES = [
-	`I love you ${msg.author.username}`,
+	`I love you {author}`,
 	'I\'ll have you know that was very legal',
-	`You meme, get out of ${msg.channel.name}`,
-	`Certification Warning\n${msg.author} - Violating certification requirements \`Informative use of the short and long description\`. 1/3`,
+	`You meme, get out of {channelname}`,
+	`Certification Warning\n{author} - Violating certification requirements \`Informative use of the short and long description\`. 1/3`,
 	'kk',
 	'dumb',
 	'not accurate',
@@ -34,13 +34,13 @@ const OLIY_RESPONSES = [
 	'We\'ve decided to put a very minimal amount of ads on the site to make up for that.',
 	'I am a busy man',
 	'Please report that to the issues repo',
-	`Yea I'll give it a ${random}/10, losing ${10-random} points for wasting your life`,
+	`Yea I'll give it a {random}/10, losing {remainder} points for wasting your life`,
 	'Don\'t bother e-mailing me about it, do you know many many e-mails I get? :triumph:',
 	'ye',
 	'nah',
 	'Russians ruin everything',
 	'heck',
-	`${msg.author} you're right`,
+	`{author} you're right`,
 	'Yea it\'s weird',
 	'hmmmm',
 	'this ain\'t it chief',
@@ -58,7 +58,7 @@ const OLIY_RESPONSES = [
 	'android is better',
 	'that sounds expensive and not that fun',
 	'idk if you like my taste',
-	`Do I see shitpost in ${msg.channel.name}`,
+	`Do I see shitpost in {channelname}`,
 	'Hello I have been summoned',
 	'Can we turn the toxicity down thank you xoxo',
 	'I\'ll remove your cert'
@@ -89,7 +89,14 @@ client.on('message', (msg) => {
 	if (msg.author.bot) return;
 	if (msg.content.startsWith('<@500954344510980136>')) return msg.channel.send('don\'t tag me for that please');
 	if (msg.content.toLowerCase().startsWith(PREFIX) || msg.content.startsWith('oily')) {
-		const random = Math.floor(Math.random() * 10);
+		let random = Math.floor(Math.random() * 10);
+		let obj = {
+			author: msg.author,
+			channelname: msg.channel.name,
+			random,
+			remainder: 10-random
+		}
+		
 		let args = msg.content.split(' ')
 		args.splice(0, 1);
 		
@@ -123,7 +130,11 @@ it's only got **${msg.guild.members.filter(m => m.user.bot).size} bots** and i m
 			case 'fix':
 				return msg.channel.send(`I'll have you know that ${args.slice(1).join(' ').replace('my', 'your')} ${args.slice(1).join(' ').endsWith('s') ? 'are' : 'is'} working just fine thank you`)
 			default:
-				return msg.channel.send(`${OLIY_RESPONSES[Math.floor(Math.random()*OLIY_RESPONSES.length)]} ${Math.random() > 0.7 ? `l${Math.random() > 0.5 ? 'o': 'u'}l` : ''}`);
+				let txt = OLIY_RESPONSES[Math.floor(Math.random()*OLIY_RESPONSES.length)];
+				for (let key in obj) {
+					txt = txt.replace(new RegExp(`{${key}}`, "ig"), obj[key])
+				}
+				return msg.channel.send(`${txt} ${Math.random() > 0.7 ? `l${Math.random() > 0.5 ? 'o': 'u'}l` : ''}`);
 		}
 	}
 })
