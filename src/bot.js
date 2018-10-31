@@ -7,17 +7,13 @@
 * and know that I do in fact write better code than this.
 */
 
-const Discord = require('discord.js');
-const events = ['MESSAGE_CREATE', 'READY', 'GUILD_CREATE', 'GUILD_DELETE']
-const disabledEvents = Object.keys(Discord.Constants.WSEvents).filter(i => !events.includes(i))
-const client = new Discord.Client({
-	messageCacheMaxSize: 0,
-	messageCacheLifetime: 0,
-	messageSweepInterval: 60,
-	disableEveryone: true,
-	disabledEvents
-});
+const Discord = require('eris');
 const config = require('./config.json')
+const client = new Discord.Client(config.token, {
+	disableEveryone: true,
+});
+client.connect()
+
 const { inspect } = require('util')
 
 const OLIY_RESPONSES = [
@@ -79,15 +75,9 @@ const FEELINGS = [
 ]
 const PREFIX = 'oliy';
 
-client.login(config.token)
-	.then(() => {
-		client.users.sweep(u => u);
-		setInterval(() => client.users.sweep(u => u), 5e5);
-	});
-
-client.on('message', (msg) => {
+client.on('messageCreate', (msg) => {
 	if (msg.author.bot) return;
-	if (msg.content.startsWith('<@500954344510980136>')) return msg.channel.send('don\'t tag me for that please');
+	if (msg.content.startsWith('<@500954344510980136>')) return msg.channel.createMessage('don\'t tag me for that please');
 	if (msg.content.toLowerCase().startsWith(PREFIX) || msg.content.startsWith('oily')) {
 		let random = Math.floor(Math.random() * 10);
 		let obj = {
@@ -100,41 +90,41 @@ client.on('message', (msg) => {
 		let args = msg.content.split(' ')
 		args.splice(0, 1);
 		
-		if (args.toString().endsWith('?')) return msg.channel.send('I\'m a busy man so I don\'t have time to answer your question thank you');
+		if (args.toString().endsWith('?')) return msg.channel.createMessage('I\'m a busy man so I don\'t have time to answer your question thank you');
 		if (args.toString().length < 2) return
 
 		switch (args[0]) {
 			case 'eval':
-				if (msg.author.id !== config.owner) return msg.channel.send('you are not the real G');
+				if (msg.author.id !== config.owner) return msg.channel.createMessage('you are not the real G');
 				try {
-					msg.channel.send(`\`\`\`js\n${inspect(eval(args.slice(1).join(' ')))}\`\`\``)
+					msg.channel.createMessage(`\`\`\`js\n${inspect(eval(args.slice(1).join(' ')))}\`\`\``)
 				} catch (err) {
-					msg.channel.send(`\`\`\`js\n${err}\`\`\``)
+					msg.channel.createMessage(`\`\`\`js\n${err}\`\`\``)
 				}			
 				break;
 			case 'ping':
-				return msg.channel.send('ping diddly ding brother');
+				return msg.channel.createMessage('ping diddly ding brother');
 				break;
 			case 'help':
-				return msg.channel.send(`fuckin oath g'day ${msg.author.username}, it's looking pretty bleak today\nBUT not anymore\nnow that you've added the almighty Oliy Simulator, we can finally enjoy what's left of our miserable lives.\
+				return msg.channel.createMessage(`fuckin oath g'day ${msg.author.username}, it's looking pretty bleak today\nBUT not anymore\nnow that you've added the almighty Oliy Simulator, we can finally enjoy what's left of our miserable lives.\
 \n\njust do \`${PREFIX} [what you want to say to oliy]\` (such as \`oliy how is DBL's business going\`) and have the incredible man speak some words of wisdom to you\n\nyeah there's some other shit too like \`${PREFIX} serverinfo\` and \
 \`${PREFIX} business\` but that shit's boring what you really wanna do is SPEAK TO THE LEGEND`)
 				break;
 			case 'serverinfo':
-				return msg.channel.send(`my name's oliy and this server named ${msg.guild.name} is looking ${FEELINGS[Math.floor(Math.random()*FEELINGS.length)]}\nyeah it's got around ${msg.guild.members.size} members but \
+				return msg.channel.createMessage(`my name's oliy and this server named ${msg.guild.name} is looking ${FEELINGS[Math.floor(Math.random()*FEELINGS.length)]}\nyeah it's got around ${msg.guild.members.size} members but \
 it's only got **${msg.guild.members.filter(m => m.user.bot).size} bots** and i mean that's just not good enough, we all know more bots means more BUSINESS`)
 				break;
 			case 'business':
-				return msg.channel.send(`now you're speaking my language ${msg.author.username}, +${Math.floor(Math.random() * 100)}% business`)
+				return msg.channel.createMessage(`now you're speaking my language ${msg.author.username}, +${Math.floor(Math.random() * 100)}% business`)
 				break;
 			case 'fix':
-				return msg.channel.send(`I'll have you know that ${args.slice(1).join(' ').replace('my', 'your')} ${args.slice(1).join(' ').endsWith('s') ? 'are' : 'is'} working just fine thank you`)
+				return msg.channel.createMessage(`I'll have you know that ${args.slice(1).join(' ').replace('my', 'your')} ${args.slice(1).join(' ').endsWith('s') ? 'are' : 'is'} working just fine thank you`)
 			default:
 				let txt = OLIY_RESPONSES[Math.floor(Math.random()*OLIY_RESPONSES.length)];
 				for (let key in obj) {
 					txt = txt.replace(new RegExp(`{${key}}`, "ig"), obj[key])
 				}
-				return msg.channel.send(`${txt} ${Math.random() > 0.7 ? `l${Math.random() > 0.5 ? 'o': 'u'}l` : ''}`);
+				return msg.channel.createMessage(`${txt} ${Math.random() > 0.7 ? `l${Math.random() > 0.5 ? 'o': 'u'}l` : ''}`);
 		}
 	}
 })
