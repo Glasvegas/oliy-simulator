@@ -97,7 +97,10 @@ client.on('messageCreate', (msg) => {
 			case 'eval':
 				if (msg.author.id !== config.owner) return msg.channel.createMessage('you are not the real G');
 				try {
-					msg.channel.createMessage(`\`\`\`js\n${inspect(eval(args.slice(1).join(' ').replace(config.token, 'piss off ya monkey')))}\`\`\``)
+					let y = new RegExp(config.token, 'gi');
+					let result = inspect(eval(args.slice(1).join(' ')));
+					result = result.replace(y, 'piss off ya monkey')
+					msg.channel.createMessage(`\`\`\`js\n${result}\`\`\``)
 				} catch (err) {
 					msg.channel.createMessage(`\`\`\`js\n${err}\`\`\``)
 				}			
