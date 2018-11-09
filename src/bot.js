@@ -115,7 +115,7 @@ client.on('messageCreate', (msg) => {
 				break;
 			case 'serverinfo':
 				return msg.channel.createMessage(`my name's oliy and this server named ${msg.channel.guild.name} is looking ${FEELINGS[Math.floor(Math.random()*FEELINGS.length)]}\nyeah it's got around ${msg.channel.guild.members.size} members but \
-it's only got **${msg.channel.guild.members.filter(m => m.user.bot).size} bots** and i mean that's just not good enough, we all know more bots means more BUSINESS`)
+it's only got **${msg.channel.guild.members.filter(m => m.user.bot).length} bots** and i mean that's just not good enough, we all know more bots means more BUSINESS`)
 				break;
 			case 'business':
 				return msg.channel.createMessage(`now you're speaking my language ${msg.author.username}, +${Math.floor(Math.random() * 100)}% business`)
