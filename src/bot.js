@@ -81,7 +81,7 @@ client.on('messageCreate', (msg) => {
 	if (msg.content.toLowerCase().startsWith(PREFIX) || msg.content.startsWith('oily')) {
 		let random = Math.floor(Math.random() * 10);
 		let obj = {
-			author: msg.author,
+			author: msg.author.mention,
 			channelname: msg.channel.name,
 			random,
 			remainder: 10-random
@@ -114,8 +114,8 @@ client.on('messageCreate', (msg) => {
 \`${PREFIX} business\` but that shit's boring what you really wanna do is SPEAK TO THE LEGEND`)
 				break;
 			case 'serverinfo':
-				return msg.channel.createMessage(`my name's oliy and this server named ${msg.guild.name} is looking ${FEELINGS[Math.floor(Math.random()*FEELINGS.length)]}\nyeah it's got around ${msg.guild.members.size} members but \
-it's only got **${msg.guild.members.filter(m => m.user.bot).size} bots** and i mean that's just not good enough, we all know more bots means more BUSINESS`)
+				return msg.channel.createMessage(`my name's oliy and this server named ${msg.guild.name} is looking ${FEELINGS[Math.floor(Math.random()*FEELINGS.length)]}\nyeah it's got around ${msg.channel.guild.members.size} members but \
+it's only got **${msg.channel.guild.members.filter(m => m.user.bot).size} bots** and i mean that's just not good enough, we all know more bots means more BUSINESS`)
 				break;
 			case 'business':
 				return msg.channel.createMessage(`now you're speaking my language ${msg.author.username}, +${Math.floor(Math.random() * 100)}% business`)
